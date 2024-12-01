@@ -5,16 +5,18 @@ import java.util.*;
  */
 public class President {
     private String name;
-    private int century;
+    private int year;
+    private double finalComplexity;
     private ArrayList<Speech> speeches;
     /**
      * Declares and initalizes a new President object
      * @param name
-     * @param century
+     * @param year
      */
-    public President(String name, int century){
+    public President(String name, int year){
         this.name = name;
-        this.century = century;
+        this.year = year;
+        finalComplexity = 0.0;
         speeches = new ArrayList<Speech>();
     }
     /**
@@ -26,14 +28,34 @@ public class President {
         return speeches.add(speech);
     }
     /**
-     * Returns the average complexity of a President's speeches
+     * Sets the average complexity of a President's speeches
      */
-    public double finalComplexity() {
+    public void finalComplexity() {
         double sum = 0;
         for(Speech s : speeches){
             sum += s.complexity();
         }
-        return sum/((double) speeches.size());
+        finalComplexity = sum/((double) speeches.size());
     }
-
+    /**
+     * Returns the name of the President
+     * @return name
+     */
+    public String getName(){
+        return name;
+    }
+    /**
+     * Returns the year the President took office
+     * @return year
+     */
+    public int getYear(){
+        return year;
+    }
+    /**
+     * Returns a String representation of a president
+     * @return
+     */
+    public String toString(){
+        return name + " " + year + " " + finalComplexity;
+    }
 }
