@@ -1,8 +1,12 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.time.LocalDateTime;
 /**
  * This is an implementaiton of a data access panel
  * to access information regarding a President's
@@ -67,9 +71,9 @@ public class Main {
             //Initalizes and displays the screen for information access
             Scanner in = new Scanner(System.in);
             String input = "";
-            initalize();
+            initalizeSelection();
             do{
-                input = in.nextLine() + '\n';
+                input = in.nextLine();
                 Scanner l =  new Scanner(input);
                 String choice = l.next();
                 if(choice.equalsIgnoreCase("name")){
@@ -77,10 +81,33 @@ public class Main {
                     while(l.hasNext()){
                         name += l.next() + " ";
                     }
+                    name = name.substring(0, name.length()-1);
                     for(President p : presidents){
                         if(p.getName().equalsIgnoreCase(name)){
                             System.out.println(p);
                         }
+                    }
+                }
+                //Exports the data to a .csv file, formatted based off the current date + time
+                else if(choice.equalsIgnoreCase("export")){
+                    String[] headers = {"President", "Inauguration Year", "Speech Complexity"};
+                    LocalDateTime currentDateTime = LocalDateTime.now();
+                    String filepath = "/Users/yuyang/Documents/presidentialSpeechesOutput/" + currentDateTime.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + ".csv";
+                    try{
+                        FileWriter writer = new FileWriter(filepath);
+                        writer.append(String.join(",", headers));
+                        writer.append("\n");
+                        for(int i = 0; i < presidents.size(); i++){
+                            String name = presidents.get(i).getName();
+                            String year = Integer.toString(presidents.get(i).getYear());
+                            String complexity = presidents.get(i).getComplexity();
+                            writer.write(name + ","
+                                    + year + ","
+                                    + complexity + '\n');
+                        }
+                        writer.close();
+                    }catch(IOException e){
+                        System.err.println("Error writing to .csv" + e.getMessage());
                     }
                 }
             }while(!input.equalsIgnoreCase("quit"));
@@ -90,12 +117,12 @@ public class Main {
         }
     }
     /**
-     * Initalizes the inital UI
+     * Initalizes the selection UI
      */
-    public static void initalize(){
-        System.out.println("Welcome to President Stats!");
+    public static void initalizeSelection(){
         System.out.println("Avaliable Commands: ");
-        System.out.println("NAME FIRST_NAME LAST_NAME  - retrieves information for the President provided");
+        System.out.println("NAME + FIRST_NAME + MIDDLE_INITAL + LAST_NAME  - retrieves information for the President provided");
+        System.out.println("EXPORT - exports the data to a .csv file");
         System.out.println("QUIT   - exits the program" + '\n');
     }
 }

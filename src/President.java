@@ -37,6 +37,9 @@ public class President {
         }
         finalComplexity = sum/((double) speeches.size());
     }
+    public String getComplexity(){
+        return Double.toString(finalComplexity);
+    }
     /**
      * Returns the name of the President
      * @return name
