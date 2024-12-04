@@ -41,6 +41,13 @@ public class President {
         return Double.toString(finalComplexity);
     }
     /**
+     * Returns the number of speeches we ran for each president
+     * @return int size
+     */
+    public int getSpeechCount(){
+        return speeches.size();
+    }
+    /**
      * Returns the name of the President
      * @return name
      */
@@ -61,4 +68,5 @@ public class President {
     public String toString(){
         return name + " " + year + " " + finalComplexity;
     }
+
 }

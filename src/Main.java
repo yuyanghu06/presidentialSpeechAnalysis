@@ -15,10 +15,12 @@ import java.time.LocalDateTime;
  */
 public class Main {
     public static void main(String[] args) {
-        String fileName = ""; //debugging, to be removed
+        String fileName = ""; //Used to catch errors in the speech directory
         try{
             ArrayList<President> presidents = new ArrayList<President>();
-            File presidentFile = new File("/Users/yuyang/Documents/Intellij IDEA/Presidential Speech Analysis/US_Presidents_Years.csv");
+            //MAKE SURE US_Presidents_Years.csv FILE IS PRESENT IN DIRECTORY
+            //SHOULD BE INCLUDED IN THE GITHUB DIRECTORY, PROJECT WILL NOT RUN WITHOUT IT
+            File presidentFile = new File("US_Presidents_Years.csv");
             Scanner s = null;
             try{
                 s = new Scanner(presidentFile);
@@ -90,8 +92,9 @@ public class Main {
                 }
                 //Exports the data to a .csv file, formatted based off the current date + time
                 else if(choice.equalsIgnoreCase("export")){
-                    String[] headers = {"President", "Inauguration Year", "Speech Complexity"};
+                    String[] headers = {"President", "# of Speeches", "Inauguration Year", "Speech Complexity"};
                     LocalDateTime currentDateTime = LocalDateTime.now();
+                    //CHANGE FILE PATH TO DESIRED EXPORT LOCATION, OTHERWISE THE SYSTEM WILL EXPORT TO THE PROJECT DIRECTORY
                     String filepath = "/Users/yuyang/Documents/presidentialSpeechesOutput/" + currentDateTime.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + ".csv";
                     try{
                         FileWriter writer = new FileWriter(filepath);
@@ -101,9 +104,9 @@ public class Main {
                             String name = presidents.get(i).getName();
                             String year = Integer.toString(presidents.get(i).getYear());
                             String complexity = presidents.get(i).getComplexity();
-                            writer.write(name + ","
-                                    + year + ","
-                                    + complexity + '\n');
+                            String numOfSpeeches = Integer.toString(presidents.get(i).getSpeechCount());
+                            writer.write(name + "," + numOfSpeeches + ", "
+                                    + year + "," + complexity + '\n');
                         }
                         writer.close();
                     }catch(IOException e){
